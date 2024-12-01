@@ -1,22 +1,14 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import CalendarAgenda from '../components/CalendarAgenda/CalendarAgenda';
+import CalendarAgenda from '../components/CalendarAgenda';
 
-const Homepage = () => {
+const Homepage = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-        <CalendarAgenda />
-    </View>
+    <CalendarAgenda navigation={navigation} />
   );
 };
 
 Homepage.propTypes = {
   navigation: PropTypes.object.isRequired,
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10 },
-});
-
 export default Homepage;

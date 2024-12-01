@@ -26,20 +26,41 @@ const CustomInput = ({
       } else {
         setError('');
       }
+    } else if (type === 'time') {
+      const timeRegex = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/;
+      if (!timeRegex.test(text)) {
+        setError('Horário inválido (formato HH:MM)');
+      } else {
+        setError('');
+      }
     } else {
       setError('');
     }
   };
 
   const handleChange = (text) => {
-    validateInput(text);
-    onChange(text);
+    let formattedText = text;
+
+    if (type === 'time') {
+      formattedText = text.replace(/[^0-9]/g, '');
+
+      if (formattedText.length > 2) {
+        formattedText = `${formattedText.slice(0, 2)}:${formattedText.slice(2, 4)}`;
+      }
+      if (formattedText.length > 5) {
+        formattedText = formattedText.slice(0, 5);
+      }
+    }
+
+    validateInput(formattedText);
+    onChange(formattedText);
   };
 
   const keyboardType = {
     email: 'email-address',
     phone: 'phone-pad',
     text: 'default',
+    time: 'number-pad',
   }[type] || 'default';
 
   return (
@@ -53,6 +74,7 @@ const CustomInput = ({
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         autoCapitalize="none"
+        maxLength={type === 'time' ? 5 : undefined}
       />
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
